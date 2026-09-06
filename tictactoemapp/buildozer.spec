@@ -26,7 +26,9 @@ android.api = 34
 android.minapi = 21
 android.ndk = 25b
 android.ndk_api = 21
-android.sdk = 34
+# android.sdk is deprecated and omitted in favor of android.api
+android.accept_sdk_license = True
+android.skip_update = False
 
 # Android permissions
 android.permissions = INTERNET,VIBRATE
@@ -40,8 +42,9 @@ fullscreen = 0
 # Android activity class
 android.activity_class_name = org.kivy.android.PythonActivity
 
-# Extra copies
-source.exclude_dirs = tests, .git, __pycache__, assets/images/raw
+# Excluded paths and desktop-only files
+source.exclude_dirs = tests, .git, __pycache__, assets/images/raw, .venv, .vscode, .github, .agents
+source.exclude_patterns = twindowstictactoe.py, *.pyc
 
 [buildozer]
 log_level = 2
