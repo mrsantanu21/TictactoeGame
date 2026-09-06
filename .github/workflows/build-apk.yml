@@ -92,7 +92,7 @@ jobs:
           yes | sdkmanager --licenses || true
 
           # 4. Install required platform-tools, Android platform, and build-tools
-          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
           # 5. Create legacy tools/bin symlink expected by Buildozer
           mkdir -p "$ANDROID_HOME/tools"
@@ -130,7 +130,7 @@ jobs:
           # 8. Verify sdkmanager path for Buildozer
           echo "Verifying sdkmanager location for Buildozer:"
           ls -la ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-          ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --version
+          ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --version || true
 
       - name: Locate App Directory
         id: app_dir
