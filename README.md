@@ -177,3 +177,4 @@ Or transfer the `.apk` file to the phone and install it directly (allow Unknown 
 - Background: `#242622`
 - Primary: `#8DA58D` (Sage green)
 - Winning Accent: `#C79A72`
+<img width="1024" height="1536" alt="UI" src="https://github.com/user-attachments/assets/376bca55-bc3c-4d5a-866d-dc5be8997e22" />
