@@ -22,11 +22,12 @@ presplash.filename = %(source.dir)s/assets/images/presplash.png
 orientation = portrait
 
 # Android API levels
-android.api = 34
+android.api = 33
 android.minapi = 21
 android.ndk = 25b
 android.ndk_api = 21
-# android.sdk is deprecated and omitted in favor of android.api
+# Pin python-for-android to stable release (uses stable Python 3.11.5)
+p4a.branch = v2024.01.21
 android.accept_sdk_license = True
 android.skip_update = False
 

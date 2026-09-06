@@ -91,8 +91,8 @@ jobs:
           touch ~/.android/repositories.cfg
           yes | sdkmanager --licenses || true
 
-          # 4. Install required platform-tools, Android platform, and build-tools
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          # 4. Install required platform-tools, Android platforms, and build-tools
+          sdkmanager "platform-tools" "platforms;android-33" "platforms;android-34" "build-tools;34.0.0" "build-tools;33.0.2"
 
           # 5. Create legacy tools/bin symlink expected by Buildozer
           mkdir -p "$ANDROID_HOME/tools"
