@@ -1,5 +1,10 @@
 # Tic Tac Toe — Mobile Android App (Python + Kivy)
 
+[![Build APK](https://github.com/mrsantanu21/TictactoeGame/actions/workflows/build-apk.yml/badge.svg)](https://github.com/mrsantanu21/TictactoeGame/actions/workflows/build-apk.yml)
+[![Download Latest APK](https://img.shields.io/badge/Download-Latest%20APK-brightgreen?logo=android)](https://github.com/mrsantanu21/TictactoeGame/releases/latest)
+
+> 📱 **Download APK**: Download the latest Android `.apk` directly from the [GitHub Releases Page](https://github.com/mrsantanu21/TictactoeGame/releases/latest).
+
 A polished mobile-first Tic-Tac-Toe app converted from the original Windows desktop Tkinter application.
 Built entirely in **Python + Kivy**, designed for Android, with a clean six-screen UI.
 
