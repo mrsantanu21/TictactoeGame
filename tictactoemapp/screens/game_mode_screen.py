@@ -11,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 from components.rounded_button import RoundedButton, IconButton, CanvasIcon
 from game.game_state import GameState
 
@@ -83,9 +84,9 @@ class GameModeCard(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
         self.size_hint = (1, None)
-        self.height = 76
-        self.padding = [20, 14, 20, 14]
-        self.spacing = 16
+        self.height = scaled_h(76)
+        self.padding = [dp(20), dp(14), dp(20), dp(14)]
+        self.spacing = dp(16)
 
         self.title_text = title
         self.icon_symbol = icon
@@ -200,14 +201,14 @@ class GameModeScreen(Screen):
         # Content container
         self.content_layout = BoxLayout(
             orientation="vertical",
-            padding=[24, 18, 24, 32],
-            spacing=16,
+            padding=[dp(24), dp(18), dp(24), dp(32)],
+            spacing=dp(16),
             size_hint=(1, 1),
         )
         self.root_layout.add_widget(self.content_layout)
 
         # 1. HEADER (Back | "Game Mode" | Settings)
-        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=52)
+        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(52))
         self.btn_back = IconButton(icon="back", on_click=self._go_back)
         header.add_widget(self.btn_back)
 

@@ -12,6 +12,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 from .rounded_button import RoundedButton
 
 
@@ -41,14 +42,14 @@ class GameOverDialog(FloatLayout):
         self.overlay.bind(pos=self._draw_overlay, size=self._draw_overlay)
         self.add_widget(self.overlay)
 
-        # Center card
+        # Center card — height scales with screen viewport
         self.card = BoxLayout(
             orientation="vertical",
-            size_hint=(0.84, None),
-            height=280,
+            size_hint=(0.88, None),
+            height=scaled_h(280),
             pos_hint={"center_x": 0.5, "center_y": 0.5},
-            spacing=16,
-            padding=[24, 28, 24, 24],
+            spacing=dp(16),
+            padding=[dp(24), dp(28), dp(24), dp(24)],
         )
         self.card.bind(pos=self._draw_card, size=self._draw_card)
         self.add_widget(self.card)
@@ -59,7 +60,7 @@ class GameOverDialog(FloatLayout):
             font_size="22sp",
             bold=True,
             size_hint=(1, None),
-            height=34,
+            height=scaled_h(34),
             halign="center",
             valign="middle",
         )
@@ -70,7 +71,7 @@ class GameOverDialog(FloatLayout):
             text=subtitle,
             font_size="14sp",
             size_hint=(1, None),
-            height=40,
+            height=scaled_h(40),
             halign="center",
             valign="middle",
         )
@@ -203,11 +204,11 @@ class ConfirmDialog(FloatLayout):
 
         self.card = BoxLayout(
             orientation="vertical",
-            size_hint=(0.82, None),
-            height=210,
+            size_hint=(0.88, None),
+            height=scaled_h(210),
             pos_hint={"center_x": 0.5, "center_y": 0.5},
-            spacing=14,
-            padding=[20, 22, 20, 20],
+            spacing=dp(14),
+            padding=[dp(20), dp(22), dp(20), dp(20)],
         )
         self.card.bind(pos=self._draw_card, size=self._draw_card)
         self.add_widget(self.card)
@@ -217,7 +218,7 @@ class ConfirmDialog(FloatLayout):
             font_size="20sp",
             bold=True,
             size_hint=(1, None),
-            height=30,
+            height=scaled_h(30),
             halign="center",
             valign="middle",
         )
@@ -228,14 +229,14 @@ class ConfirmDialog(FloatLayout):
             text=message,
             font_size="13.5sp",
             size_hint=(1, None),
-            height=38,
+            height=scaled_h(38),
             halign="center",
             valign="middle",
         )
         self.msg_lbl.bind(size=self.msg_lbl.setter("text_size"))
         self.card.add_widget(self.msg_lbl)
 
-        btn_row = BoxLayout(orientation="horizontal", spacing=10, size_hint=(1, None), height=46)
+        btn_row = BoxLayout(orientation="horizontal", spacing=dp(10), size_hint=(1, None), height=scaled_h(46))
         self.btn_cancel = RoundedButton(
             text="Cancel",
             style="surface",

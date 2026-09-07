@@ -11,6 +11,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, sh, clamp, scaled_h
 from game.game_state import GameState
 from components.rounded_button import CanvasIcon
 
@@ -22,7 +23,9 @@ class StatusIndicatorDot(Widget):
         super().__init__(**kwargs)
         self.is_active = is_active
         self.size_hint = (None, None)
-        self.size = (14, 14)
+        # Use dp() so status dot scales with screen density
+        _sz = dp(14)
+        self.size = (_sz, _sz)
         self.bind(pos=self._redraw, size=self._redraw)
         theme_manager.add_listener(self._on_theme)
         self._redraw()
@@ -63,13 +66,16 @@ class PlayersStatusSheet(FloatLayout):
         self.add_widget(self.backdrop)
 
         # Bottom Sheet container
+        # Use sh() so the sheet occupies a proportional fraction of any screen height,
+        # clamped between 300 and 520 dp so it never overflows tiny or huge screens.
+        _panel_h = clamp(sh(0.60), dp(300), dp(520))
         self.panel = BoxLayout(
             orientation="vertical",
             size_hint=(1, None),
-            height=370,
-            y=-370,  # Starts hidden below screen
-            spacing=16,
-            padding=[24, 16, 24, 28],
+            height=_panel_h,
+            y=-_panel_h,  # Starts hidden below the screen
+            spacing=dp(16),
+            padding=[dp(24), dp(16), dp(24), dp(28)],
         )
         self.panel.bind(pos=self._draw_panel, size=self._draw_panel)
         self.add_widget(self.panel)
@@ -87,8 +93,8 @@ class PlayersStatusSheet(FloatLayout):
 
     def _build_content(self):
         # 1. Subtle Drag Indicator Handle
-        handle_container = BoxLayout(size_hint=(1, None), height=14)
-        self.handle = Widget(size_hint=(None, None), size=(44, 5))
+        handle_container = BoxLayout(size_hint=(1, None), height=dp(14))
+        self.handle = Widget(size_hint=(None, None), size=(dp(44), dp(5)))
         self.handle.bind(pos=self._draw_handle, size=self._draw_handle)
         handle_container.add_widget(Widget(size_hint_x=0.5))
         handle_container.add_widget(self.handle)
@@ -101,7 +107,7 @@ class PlayersStatusSheet(FloatLayout):
             font_size="19sp",
             bold=True,
             size_hint=(1, None),
-            height=28,
+            height=scaled_h(28),
             halign="left",
             valign="middle",
         )
@@ -112,18 +118,18 @@ class PlayersStatusSheet(FloatLayout):
         self.players_card = BoxLayout(
             orientation="vertical",
             size_hint=(1, None),
-            height=130,
-            padding=[16, 12, 16, 12],
-            spacing=8,
+            height=scaled_h(130),
+            padding=[dp(16), dp(12), dp(16), dp(12)],
+            spacing=dp(8),
         )
         self.players_card.bind(pos=self._draw_players_card, size=self._draw_players_card)
 
         # Player X Row
-        row_x = BoxLayout(orientation="horizontal", spacing=12)
+        row_x = BoxLayout(orientation="horizontal", spacing=dp(12))
         self.avatar_x = self._create_avatar("X")
         row_x.add_widget(self.avatar_x)
 
-        info_x = BoxLayout(orientation="vertical", spacing=2)
+        info_x = BoxLayout(orientation="vertical", spacing=dp(2))
         self.lbl_x_name = Label(text="Player X", font_size="15sp", bold=True, halign="left", valign="middle")
         self.lbl_x_name.bind(size=self.lbl_x_name.setter("text_size"))
         self.lbl_x_sub = Label(text="You", font_size="12sp", halign="left", valign="middle")
@@ -142,11 +148,11 @@ class PlayersStatusSheet(FloatLayout):
         self.players_card.add_widget(self.card_divider)
 
         # Player O Row
-        row_o = BoxLayout(orientation="horizontal", spacing=12)
+        row_o = BoxLayout(orientation="horizontal", spacing=dp(12))
         self.avatar_o = self._create_avatar("O")
         row_o.add_widget(self.avatar_o)
 
-        info_o = BoxLayout(orientation="vertical", spacing=2)
+        info_o = BoxLayout(orientation="vertical", spacing=dp(2))
         self.lbl_o_name = Label(text="Player O", font_size="15sp", bold=True, halign="left", valign="middle")
         self.lbl_o_name.bind(size=self.lbl_o_name.setter("text_size"))
         self.lbl_o_sub = Label(text="Opponent", font_size="12sp", halign="left", valign="middle")
@@ -167,7 +173,7 @@ class PlayersStatusSheet(FloatLayout):
             font_size="17sp",
             bold=True,
             size_hint=(1, None),
-            height=26,
+            height=scaled_h(26),
             halign="left",
             valign="middle",
         )
@@ -178,9 +184,9 @@ class PlayersStatusSheet(FloatLayout):
         self.status_card = BoxLayout(
             orientation="horizontal",
             size_hint=(1, None),
-            height=58,
-            padding=[16, 8, 16, 8],
-            spacing=12,
+            height=scaled_h(58),
+            padding=[dp(16), dp(8), dp(16), dp(8)],
+            spacing=dp(12),
         )
         self.status_card.bind(pos=self._draw_status_card, size=self._draw_status_card)
 
@@ -204,7 +210,8 @@ class PlayersStatusSheet(FloatLayout):
         self._update_colors()
 
     def _create_avatar(self, mark: str) -> Widget:
-        widget = Widget(size_hint=(None, None), size=(38, 38))
+        _sz = dp(38)
+        widget = Widget(size_hint=(None, None), size=(_sz, _sz))
 
         def draw(w, *args):
             w.canvas.clear()

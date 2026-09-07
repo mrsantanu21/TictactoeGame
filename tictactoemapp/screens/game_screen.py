@@ -12,6 +12,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 from components.rounded_button import RoundedButton, IconButton
 from components.player_card import PlayerHeaderCard
 from components.game_board import MobileGameBoard
@@ -40,14 +41,14 @@ class GameScreen(Screen):
         # Content container
         self.content_layout = BoxLayout(
             orientation="vertical",
-            padding=[24, 18, 24, 32],
-            spacing=16,
+            padding=[dp(24), dp(18), dp(24), dp(32)],
+            spacing=dp(16),
             size_hint=(1, 1),
         )
         self.root_layout.add_widget(self.content_layout)
 
         # 1. HEADER (Back | "Tic Tac Toe" | Settings)
-        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=52)
+        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(52))
         self.btn_back = IconButton(icon="back", on_click=self._go_back)
         header.add_widget(self.btn_back)
 

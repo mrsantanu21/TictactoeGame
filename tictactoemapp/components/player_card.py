@@ -10,6 +10,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 
 
 class CircularAvatar(Widget):
@@ -20,7 +21,9 @@ class CircularAvatar(Widget):
         self.mark = mark
         self.is_active = is_active
         self.size_hint = (None, None)
-        self.size = (size_dp, size_dp)
+        # Use dp() so the avatar circle scales with screen density
+        _sz = dp(size_dp)
+        self.size = (_sz, _sz)
         self.bind(pos=self._redraw, size=self._redraw)
         theme_manager.add_listener(self._on_theme)
         self._redraw()
@@ -63,15 +66,15 @@ class PlayerItem(BoxLayout):
     def __init__(self, mark: str, name: str, subtitle: str, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.spacing = 10
-        self.padding = [12, 10, 12, 10]
+        self.spacing = dp(10)
+        self.padding = [dp(12), dp(10), dp(12), dp(10)]
         self.mark = mark
 
         self.avatar = CircularAvatar(mark=mark, size_dp=42.0)
         self.add_widget(self.avatar)
 
         # Labels box
-        lbl_box = BoxLayout(orientation="vertical", spacing=2)
+        lbl_box = BoxLayout(orientation="vertical", spacing=dp(2))
         self.name_lbl = Label(
             text=name,
             font_size="15sp",
@@ -134,15 +137,16 @@ class PlayerHeaderCard(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
         self.size_hint_y = None
-        self.height = 76
-        self.padding = [6, 6, 6, 6]
-        self.spacing = 4
+        # Scale card height with screen viewport so it's proportional on all phones
+        self.height = scaled_h(76)
+        self.padding = [dp(6), dp(6), dp(6), dp(6)]
+        self.spacing = dp(4)
 
         self.player_x_item = PlayerItem(mark="X", name="Player X", subtitle="You")
         self.add_widget(self.player_x_item)
 
         # Central divider
-        self.divider = Widget(size_hint=(None, 1), width=1.5)
+        self.divider = Widget(size_hint=(None, 1), width=dp(1.5))
         self.divider.bind(pos=self._draw_divider, size=self._draw_divider)
         self.add_widget(self.divider)
 

@@ -13,6 +13,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
 from services.sound_manager import sound_manager
+from services.dp_utils import dp, scaled_h
 from components.rounded_button import RoundedButton, IconButton, CanvasIcon
 from game.game_state import GameState
 
@@ -28,7 +29,8 @@ class ToggleSwitchWidget(Widget):
         self.value = value
         self.on_toggle = on_toggle
         self.size_hint = (None, None)
-        self.size = (56, 30)
+        # Use dp() so the toggle switch is always finger-friendly on any DPI
+        self.size = (dp(56), dp(30))
         self._knob_x_offset = 0.0
         self.bind(pos=self._redraw, size=self._redraw)
         theme_manager.add_listener(self._on_theme)
@@ -152,9 +154,9 @@ class SoundRow(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
         self.size_hint = (1, None)
-        self.height = 60
-        self.padding = [16, 10, 16, 10]
-        self.spacing = 12
+        self.height = scaled_h(60)
+        self.padding = [dp(16), dp(10), dp(16), dp(10)]
+        self.spacing = dp(12)
         self.bind(pos=self._draw_bg, size=self._draw_bg)
 
         self.icon_widget = CanvasIcon(
@@ -218,14 +220,14 @@ class SettingsScreen(Screen):
 
         self.content = BoxLayout(
             orientation="vertical",
-            padding=[24, 18, 24, 32],
-            spacing=24,
+            padding=[dp(24), dp(18), dp(24), dp(32)],
+            spacing=dp(24),
             size_hint=(1, 1),
         )
         self.root_layout.add_widget(self.content)
 
         # HEADER
-        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=52)
+        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(52))
         self.btn_back = IconButton(icon="back", on_click=self._go_back)
         header.add_widget(self.btn_back)
         self.header_title = Label(
@@ -237,7 +239,7 @@ class SettingsScreen(Screen):
         )
         self.header_title.bind(size=self.header_title.setter("text_size"))
         header.add_widget(self.header_title)
-        header.add_widget(Widget(size_hint=(None, 1), width=44))
+        header.add_widget(Widget(size_hint=(None, 1), width=dp(44)))
         self.content.add_widget(header)
 
         self.content.add_widget(Widget(size_hint_y=0.03))
@@ -256,7 +258,7 @@ class SettingsScreen(Screen):
         self.content.add_widget(self.theme_lbl)
 
         # Two side-by-side theme buttons
-        theme_row = BoxLayout(orientation="horizontal", size_hint=(1, None), height=56, spacing=12)
+        theme_row = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(56), spacing=dp(12))
 
         self.btn_light = ThemeButton(
             label_text="Light",
@@ -279,7 +281,7 @@ class SettingsScreen(Screen):
         self.content.add_widget(theme_row)
 
         # Spacer / divider
-        self.divider = Widget(size_hint=(1, None), height=1)
+        self.divider = Widget(size_hint=(1, None), height=dp(1))
         self.divider.bind(pos=self._draw_divider, size=self._draw_divider)
         self.content.add_widget(self.divider)
 

@@ -11,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 from components.rounded_button import RoundedButton, IconButton
 from components.custom_dialogs import ConfirmDialog
 from game.game_state import GameState
@@ -24,12 +25,12 @@ class ScoreRow(BoxLayout):
         self.mark = mark
         self.orientation = "horizontal"
         self.size_hint = (1, None)
-        self.height = 64
-        self.padding = [16, 10, 16, 10]
-        self.spacing = 16
+        self.height = scaled_h(64)
+        self.padding = [dp(16), dp(10), dp(16), dp(10)]
+        self.spacing = dp(16)
 
-        # Avatar circle
-        self.avatar = Widget(size_hint=(None, 1), width=44)
+        # Avatar circle — use dp() width so it scales with density
+        self.avatar = Widget(size_hint=(None, 1), width=dp(44))
         self.avatar.bind(pos=self._draw_avatar, size=self._draw_avatar)
         self.add_widget(self.avatar)
 
@@ -52,7 +53,7 @@ class ScoreRow(BoxLayout):
             halign="right",
             valign="middle",
             size_hint=(None, 1),
-            width=44,
+            width=dp(44),
         )
         self.score_lbl.bind(size=self.score_lbl.setter("text_size"))
         self.add_widget(self.score_lbl)
@@ -112,14 +113,14 @@ class ScoreScreen(Screen):
 
         self.content = BoxLayout(
             orientation="vertical",
-            padding=[24, 18, 24, 32],
-            spacing=20,
+            padding=[dp(24), dp(18), dp(24), dp(32)],
+            spacing=dp(20),
             size_hint=(1, 1),
         )
         self.root_layout.add_widget(self.content)
 
         # HEADER
-        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=52)
+        header = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(52))
         self.btn_back = IconButton(icon="back", on_click=self._go_back)
         header.add_widget(self.btn_back)
         self.header_title = Label(
@@ -131,7 +132,7 @@ class ScoreScreen(Screen):
         )
         self.header_title.bind(size=self.header_title.setter("text_size"))
         header.add_widget(self.header_title)
-        header.add_widget(Widget(size_hint=(None, 1), width=44))  # Balance spacer
+        header.add_widget(Widget(size_hint=(None, 1), width=dp(44)))  # Balance spacer
         self.content.add_widget(header)
 
         self.content.add_widget(Widget(size_hint_y=0.06))
@@ -140,7 +141,7 @@ class ScoreScreen(Screen):
         self.score_card = BoxLayout(
             orientation="vertical",
             size_hint=(1, None),
-            height=158,
+            height=scaled_h(158),
             spacing=0,
         )
         self.score_card.bind(pos=self._draw_score_card, size=self._draw_score_card)
@@ -148,7 +149,7 @@ class ScoreScreen(Screen):
         self.row_x = ScoreRow(mark="X")
         self.score_card.add_widget(self.row_x)
 
-        self.divider = Widget(size_hint=(1, None), height=1)
+        self.divider = Widget(size_hint=(1, None), height=dp(1))
         self.divider.bind(pos=self._draw_divider, size=self._draw_divider)
         self.score_card.add_widget(self.divider)
 

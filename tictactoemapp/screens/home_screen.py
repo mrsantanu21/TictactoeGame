@@ -13,6 +13,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 from components.rounded_button import RoundedButton, IconButton
 from components.players_status_sheet import PlayersStatusSheet
 from game.game_state import GameState
@@ -103,14 +104,14 @@ class HomeScreen(Screen):
         # Main Vertical Layout
         self.content_layout = BoxLayout(
             orientation="vertical",
-            padding=[24, 18, 24, 32],
-            spacing=12,
+            padding=[dp(24), dp(18), dp(24), dp(32)],
+            spacing=dp(12),
             size_hint=(1, 1),
         )
         self.root_layout.add_widget(self.content_layout)
 
         # 1. TOP BAR
-        top_bar = BoxLayout(orientation="horizontal", size_hint=(1, None), height=52)
+        top_bar = BoxLayout(orientation="horizontal", size_hint=(1, None), height=scaled_h(52))
         self.btn_menu = IconButton(icon="menu", on_click=self._open_status_sheet)
         self.btn_settings = IconButton(icon="gear", on_click=self._go_settings)
         top_bar.add_widget(self.btn_menu)
@@ -124,7 +125,7 @@ class HomeScreen(Screen):
             font_size="34sp",
             bold=True,
             size_hint=(1, None),
-            height=60,
+            height=scaled_h(60),
             halign="center",
             valign="middle",
         )
@@ -141,7 +142,7 @@ class HomeScreen(Screen):
             text="Think  •  Match  •  Win",
             font_size="15sp",
             size_hint=(1, None),
-            height=36,
+            height=scaled_h(36),
             halign="center",
             valign="middle",
         )

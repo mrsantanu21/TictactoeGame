@@ -11,6 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from services.theme_manager import theme_manager
+from services.dp_utils import dp, scaled_h
 
 
 def _draw_vector_icon(canvas_ctx, icon: str, cx: float, cy: float, r: float):
@@ -190,7 +191,9 @@ class CanvasIcon(Widget):
         self.icon_type = icon
         self.icon_color = color  # If None, uses theme PRIMARY_TEXT
         self.size_hint = (None, None)
-        self.size = (size_dp, size_dp)
+        # Convert to density-independent pixels so icon is consistent across DPIs
+        _sz = dp(size_dp)
+        self.size = (_sz, _sz)
         self.bind(pos=self._redraw, size=self._redraw)
         self._redraw()
 
@@ -235,14 +238,15 @@ class RoundedButton(ButtonBehavior, BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
         self.size_hint_y = None
-        self.height = height
-        self.spacing = 10
-        self.padding = [20, 8, 20, 8]
+        # Scale height with viewport so buttons grow on bigger screens
+        self.height = scaled_h(height)
+        self.spacing = dp(10)
+        self.padding = [dp(20), dp(8), dp(20), dp(8)]
 
         self.btn_text = text
         self.btn_icon = icon
         self.btn_style = style
-        self.radius = radius
+        self.radius = dp(radius)   # Convert radius to dp for consistent pill shape
         self.font_size = font_size
         self.is_bold = bold
         self.on_click = on_click
@@ -253,7 +257,7 @@ class RoundedButton(ButtonBehavior, BoxLayout):
         if self.btn_icon:
             self.icon_label = CanvasIcon(
                 icon=self.btn_icon,
-                size_dp=22,
+                size_dp=22,  # Already converted to dp inside CanvasIcon.__init__
             )
             self.add_widget(self.icon_label)
 
@@ -340,7 +344,7 @@ class RoundedButton(ButtonBehavior, BoxLayout):
                 Color(*border_color)
                 Line(
                     rounded_rectangle=(self.x, self.y, self.width, self.height, self.radius),
-                    width=1.2,
+                    width=dp(1.2),
                 )
 
         if self.text_label:
@@ -384,7 +388,9 @@ class IconButton(ButtonBehavior, Widget):
         kwargs.pop("icon_size", None)
         super().__init__(**kwargs)
         self.size_hint = (None, None)
-        self.size = (size_dp, size_dp)
+        # Scale touch target with dp so it's always finger-friendly on any DPI
+        _sz = dp(size_dp)
+        self.size = (_sz, _sz)
         self.icon_type = icon
         self.on_click = on_click
         self._is_pressed = False
